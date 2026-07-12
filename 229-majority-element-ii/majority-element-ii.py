@@ -1,16 +1,20 @@
-class Solution(object):
+class Solution:
+# @param {integer[]} nums
+# @return {integer[]}
     def majorityElement(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
-        dic={}
-        arr=[]
-        for i in range(len(nums)):
-            if nums[i] in dic:
-                dic[nums[i]]+=1
+        if not nums:
+            return []
+        count1, count2, candidate1, candidate2 = 0, 0, 0, 1
+        for n in nums:
+            if n == candidate1:
+                count1 += 1
+            elif n == candidate2:
+                count2 += 1
+            elif count1 == 0:
+                candidate1, count1 = n, 1
+            elif count2 == 0:
+                candidate2, count2 = n, 1
             else:
-                dic[nums[i]]=1
-            if dic[nums[i]]>len(nums)//3 and nums[i] not in arr:
-                arr.append(nums[i])
-        return arr
+                count1, count2 = count1 - 1, count2 - 1
+        return [n for n in (candidate1, candidate2)
+                        if nums.count(n) > len(nums) // 3]
