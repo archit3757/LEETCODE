@@ -1,20 +1,35 @@
-class Solution:
-# @param {integer[]} nums
-# @return {integer[]}
+class Solution(object):
     def majorityElement(self, nums):
-        if not nums:
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        ele1='null'
+        count1=0
+        count2=0
+        ele2='null'
+        for i in range(len(nums)):
+            if nums[i]==ele1:
+                count1+=1
+            elif nums[i]==ele2:
+                count2+=1
+            elif count1!=0 and count2!=0:
+                count1-=1
+                count2-=1
+            elif count1==0:
+                count1+=1
+                ele1=nums[i]
+            elif count2==0:
+                count2+=1
+                ele2=nums[i]
+        if nums.count(ele1)>len(nums)/3 and nums.count(ele2)>len(nums)/3:
+            return[ele1,ele2]
+        
+        elif nums.count(ele2)>len(nums)/3:
+            return[ele2]
+        
+        elif nums.count(ele1)>len(nums)/3:
+            return[ele1]
+        else:
             return []
-        count1, count2, candidate1, candidate2 = 0, 0, 0, 1
-        for n in nums:
-            if n == candidate1:
-                count1 += 1
-            elif n == candidate2:
-                count2 += 1
-            elif count1 == 0:
-                candidate1, count1 = n, 1
-            elif count2 == 0:
-                candidate2, count2 = n, 1
-            else:
-                count1, count2 = count1 - 1, count2 - 1
-        return [n for n in (candidate1, candidate2)
-                        if nums.count(n) > len(nums) // 3]
+        
